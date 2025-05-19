@@ -8,15 +8,26 @@
 import React, { useState, useEffect } from 'react';
 
 function Local_Storage() {
-    // Initialize state with value from localStorage (if available)
-    const [input, setInput] = useState(() => {
-        return localStorage.getItem('userInput') || '';
-    });
+    const [input, setInput] = useState('');
 
-    // Update localStorage whenever input changes
+    // Load from localStorage on mount
+    useEffect(() => {
+        const saved = localStorage.getItem('userInput');
+        if (saved) {
+            setInput(saved);
+        }
+    }, []);
+
+    // Save to localStorage whenever input changes
     useEffect(() => {
         localStorage.setItem('userInput', input);
     }, [input]);
+
+    // Clear input and localStorage
+    const clearInput = () => {
+        setInput('');
+        localStorage.removeItem('userInput');
+    };
 
     return (
         <div>
@@ -27,6 +38,9 @@ function Local_Storage() {
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Type something..."
             />
+            <button onClick={clearInput} style={{ marginLeft: '10px' }}>
+                Clear
+            </button>
             <p>Current Input: {input}</p>
         </div>
     );
