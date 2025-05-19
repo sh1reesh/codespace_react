@@ -13,50 +13,63 @@ function Dependent_API_Call() {
     const [posts, setPosts] = useState([]);
     const [loadingUsers, setLoadingUsers] = useState(true);
     const [loadingPosts, setLoadingPosts] = useState(false);
+    const [error, setError] = useState(null);
 
-    // First useEffect: Fetch users
+    // Fetch users on component mount
     useEffect(() => {
-        fetch('https://jsonplaceholder.typicode.com/users')
-            .then(res => res.json())
-            .then(data => {
+        const fetchUsers = async () => {
+            try {
+                const response = await fetch('https://jsonplaceholder.typicode.com/users');
+                const data = await response.json();
                 setUsers(data);
+            } catch (err) {
+                setError('Failed to fetch users');
+                console.error(err);
+            } finally {
                 setLoadingUsers(false);
-            })
-            .catch(err => {
-                console.error('Error fetching users:', err);
-                setLoadingUsers(false);
-            });
+            }
+        };
+
+        fetchUsers();
     }, []);
 
-    // Second useEffect: Fetch posts when selectedUserId changes
+    // Fetch posts when selectedUserId changes
     useEffect(() => {
-        if (selectedUserId !== null) {
+        if (selectedUserId === null) return;
+
+        const fetchPosts = async () => {
             setLoadingPosts(true);
-            fetch(`https://jsonplaceholder.typicode.com/posts?userId=${selectedUserId}`)
-                .then(res => res.json())
-                .then(data => {
-                    setPosts(data);
-                    setLoadingPosts(false);
-                })
-                .catch(err => {
-                    console.error('Error fetching posts:', err);
-                    setLoadingPosts(false);
-                });
-        }
+            try {
+                const response = await fetch(`https://jsonplaceholder.typicode.com/posts?userId=${selectedUserId}`);
+                const data = await response.json();
+                setPosts(data);
+            } catch (err) {
+                setError('Failed to fetch posts');
+                console.error(err);
+            } finally {
+                setLoadingPosts(false);
+            }
+        };
+
+        fetchPosts();
     }, [selectedUserId]);
 
     return (
         <div>
             <h2>Users</h2>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             {loadingUsers ? (
                 <p>Loading users...</p>
             ) : (
                 <ul>
                     {users.map(user => (
-                        <li 
-                            key={user.id} 
-                            onClick={() => setSelectedUserId(user.id)} 
-                            style={{ cursor: 'pointer', fontWeight: selectedUserId === user.id ? 'bold' : 'normal' }}
+                        <li
+                            key={user.id}
+                            onClick={() => setSelectedUserId(user.id)}
+                            style={{
+                                cursor: 'pointer',
+                                fontWeight: selectedUserId === user.id ? 'bold' : 'normal',
+                            }}
                         >
                             {user.name}
                         </li>
@@ -66,7 +79,7 @@ function Dependent_API_Call() {
 
             {selectedUserId && (
                 <div>
-                    <h3>Posts by User {selectedUserId}</h3>
+                    <h3>Posts by {users.find(user => user.id === selectedUserId)?.name}</h3>
                     {loadingPosts ? (
                         <p>Loading posts...</p>
                     ) : (
