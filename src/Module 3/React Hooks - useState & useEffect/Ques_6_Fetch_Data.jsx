@@ -10,7 +10,7 @@ function Fetch_Data() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // Fetch data when component mounts
+    // Fetch data when component mount
     useEffect(() => {
         fetch('https://jsonplaceholder.typicode.com/posts') // Example API
             .then((response) => response.json())
