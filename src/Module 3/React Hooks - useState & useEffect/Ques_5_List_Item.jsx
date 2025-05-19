@@ -9,7 +9,7 @@ function List_Item() {
     const [inputValue, setInputValue] = useState('');
     const [items, setItems] = useState([]);
 
-    // Handle adding a new item
+    // Handle adding a new i
     const handleAddItem = () => {
         if (inputValue.trim() !== '') {
             setItems([...items, inputValue.trim()]);
