@@ -1,8 +1,8 @@
-// Form with Multiple Input Fields
-// Description: Create a form for user registration with fields for username, email, and password. Display the entered data under the form.
+// Form with Multiple Input F
+// Description: Create a form for user registration with fields sername, email, and password. Display the entered data under the form.
 
 
-// Steps:
+// St
 //  
 
 import React, { useState } from 'react';
