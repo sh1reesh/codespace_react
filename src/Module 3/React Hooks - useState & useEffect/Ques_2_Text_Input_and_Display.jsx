@@ -23,7 +23,7 @@ function Text_Input() {
                 onChange={handleChange} 
                 placeholder="Type something..." 
             />
-            <p>You typed: {text}</p>
+            <p>You type: {text}</p>
         </div>
     );
 }
