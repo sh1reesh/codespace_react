@@ -1,17 +1,12 @@
 import React from 'react';
-import { Provider } from 'react-redux';
-import store from './store';
-import Counter from './Module 4/Redux Toolkit - State Management in React/Counter_Redux/Counter';
+import SimpleForm from './Module 4/Advanced React Concepts/Forms/SimpleForm';
 
-const App = () => {
+function App() {
   return (
-    <Provider store={store}>
-      <div>
-        <h1>Redux Toolkit Counter App</h1>
-        <Counter />
-      </div>
-    </Provider>
+    <div className="App">
+      <SimpleForm />
+    </div>
   );
-};
+}
 
 export default App;
