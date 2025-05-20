@@ -1,26 +1,13 @@
 import React from 'react';
+import MultistepForm from './Module 4/Advanced React Concepts/Forms/MultistepForm';
 
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
-
-  componentDidCatch(error, info) {
-    console.error("Error in child component:", error, info);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return <h2>Something went wrong.</h2>;
-    }
-
-    return this.props.children;
-  }
+function App() {
+  return (
+    <div className="App">
+      <h1>Multi-step Form Example</h1>
+      <MultistepForm />
+    </div>
+  );
 }
 
-export default ErrorBoundary;
+export default App;
