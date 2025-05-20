@@ -3,3 +3,16 @@
 // Use this component in App.js
 
 
+import React from 'react';
+
+function App() {
+  const currentYear = new Date().getFullYear();
+
+  return (
+    <div>
+      <p>The current year is {currentYear}.</p>
+    </div>
+  );
+}
+
+export default App;
