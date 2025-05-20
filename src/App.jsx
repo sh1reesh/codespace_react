@@ -1,12 +1,22 @@
 import React from 'react';
-import ParentComponent from './Module 4/Advanced React Concepts/Optimizing Performance with React Memoization/ParentComponent';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Home from './pages/Home';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import TodosPage from './pages/TodosPage';
 
 function App() {
   return (
-    <div className="App">
-      <h1>React.memo Example</h1>
-      <ParentComponent />
-    </div>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/todos" element={<TodosPage />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+    </Router>
   );
 }
 
