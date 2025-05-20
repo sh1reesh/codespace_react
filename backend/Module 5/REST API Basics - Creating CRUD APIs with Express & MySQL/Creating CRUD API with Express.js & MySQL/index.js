@@ -1,7 +1,7 @@
 const express = require('express');
-const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const db = require('./db');
 
 const app = express();
 const port = 3000;
@@ -10,37 +10,21 @@ const port = 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
-// MySQL connection setup
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'your_password', // 🔁 Replace with your MySQL password
-  database: 'school'
-});
+// -------------------
+// CRUD Routes
+// -------------------
 
-db.connect(err => {
-  if (err) {
-    console.error('❌ MySQL connection failed:', err);
-    return;
-  }
-  console.log('✅ Connected to MySQL');
-});
-
-// -------------------------------
-// CRUD Routes for Student Table
-// -------------------------------
-
-// Create a new student
+// CREATE student
 app.post('/students', (req, res) => {
   const { Name, Age } = req.body;
   const sql = 'INSERT INTO Student (Name, Age) VALUES (?, ?)';
   db.query(sql, [Name, Age], (err, result) => {
     if (err) return res.status(500).send(err);
-    res.status(201).send({ message: 'Student added', studentId: result.insertId });
+    res.status(201).send({ message: 'Student created', id: result.insertId });
   });
 });
 
-// Read all students
+// READ all students
 app.get('/students', (req, res) => {
   db.query('SELECT * FROM Student', (err, results) => {
     if (err) return res.status(500).send(err);
@@ -48,7 +32,7 @@ app.get('/students', (req, res) => {
   });
 });
 
-// Read student by ID
+// READ student by ID
 app.get('/students/:id', (req, res) => {
   const { id } = req.params;
   db.query('SELECT * FROM Student WHERE ID = ?', [id], (err, result) => {
@@ -58,18 +42,17 @@ app.get('/students/:id', (req, res) => {
   });
 });
 
-// Update student by ID
+// UPDATE student
 app.put('/students/:id', (req, res) => {
   const { id } = req.params;
   const { Name, Age } = req.body;
-  const sql = 'UPDATE Student SET Name = ?, Age = ? WHERE ID = ?';
-  db.query(sql, [Name, Age, id], (err, result) => {
+  db.query('UPDATE Student SET Name = ?, Age = ? WHERE ID = ?', [Name, Age, id], (err, result) => {
     if (err) return res.status(500).send(err);
     res.status(200).send({ message: 'Student updated' });
   });
 });
 
-// Delete student by ID
+// DELETE student
 app.delete('/students/:id', (req, res) => {
   const { id } = req.params;
   db.query('DELETE FROM Student WHERE ID = ?', [id], (err, result) => {
@@ -78,7 +61,7 @@ app.delete('/students/:id', (req, res) => {
   });
 });
 
-// Start server
+// Start the server
 app.listen(port, () => {
   console.log(`🚀 Server running at http://localhost:${port}`);
 });
