@@ -1,16 +1,11 @@
-import React, { Suspense, lazy } from 'react';
-
-const FetchData = lazy(() =>
-  import('./Module 4/Advanced React Concepts/Fetching Data Using Fetch API & Axios/FetchData')
-);
+import React from 'react';
+import ParentComponent from './Module 4/Advanced React Concepts/Optimizing Performance with React Memoization/ParentComponent';
 
 function App() {
   return (
     <div className="App">
-      <h1>Data Fetching Example</h1>
-      <Suspense fallback={<p>Loading component...</p>}>
-        <FetchData />
-      </Suspense>
+      <h1>React.memo Example</h1>
+      <ParentComponent />
     </div>
   );
 }
