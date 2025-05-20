@@ -1,11 +1,16 @@
-import React from 'react';
-import FetchData from './Module 4/Advanced React Concepts/Fetching Data Using Fetch API & Axios/FetchData';
+import React, { Suspense, lazy } from 'react';
+
+const FetchData = lazy(() =>
+  import('./Module 4/Advanced React Concepts/Fetching Data Using Fetch API & Axios/FetchData')
+);
 
 function App() {
   return (
     <div className="App">
       <h1>Data Fetching Example</h1>
-      <FetchData />
+      <Suspense fallback={<p>Loading component...</p>}>
+        <FetchData />
+      </Suspense>
     </div>
   );
 }

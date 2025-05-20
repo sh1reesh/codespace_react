@@ -1,49 +1,53 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 const FetchData = () => {
-  const [data, setData] = useState([]); // State to hold the fetched data
-  const [loading, setLoading] = useState(true); // State to indicate loading status
-  const [error, setError] = useState(null); // State to hold any error that occurs
+  const [data, setData] = useState([]);
+  const [cachedData, setCachedData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Function to fetch data from the API
+    if (cachedData) {
+      setData(cachedData);
+      setLoading(false);
+      return;
+    }
+
     const fetchData = async () => {
       try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/posts'); // Replace with your API endpoint
+        const response = await fetch('https://jsonplaceholder.typicode.com/posts');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const result = await response.json(); // Parse the JSON response
-        setData(result); // Update state with the fetched data
+        const result = await response.json();
+        setData(result);
+        setCachedData(result); // Cache the result
       } catch (err) {
-        setError(err.message); // Update state with the error message
+        setError(err.message);
       } finally {
-        setLoading(false); // Set loading to false after data is fetched or an error occurs
+        setLoading(false);
       }
     };
 
-    fetchData(); // Call the fetchData function
-  }, []); // Empty dependency array ensures this runs once when the component mounts
+    fetchData();
+  }, [cachedData]);
 
-  if (loading) {
-    return <p>Loading data...</p>; // Display while data is loading
-  }
+  const renderedList = useMemo(() => (
+    data.map((item) => (
+      <li key={item.id}>
+        <strong>{item.title}</strong>
+        <p>{item.body}</p>
+      </li>
+    ))
+  ), [data]);
 
-  if (error) {
-    return <p>Error: {error}</p>; // Display if an error occurred
-  }
+  if (loading) return <p>Loading data...</p>;
+  if (error) return <p style={{ color: 'red' }}>Error: {error}</p>;
 
   return (
     <div>
       <h2>Fetched Data:</h2>
-      <ul>
-        {data.map((item) => (
-          <li key={item.id}>
-            <strong>{item.title}</strong>
-            <p>{item.body}</p>
-          </li>
-        ))}
-      </ul>
+      <ul>{renderedList}</ul>
     </div>
   );
 };
