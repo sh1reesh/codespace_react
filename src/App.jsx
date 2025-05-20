@@ -1,12 +1,26 @@
 import React from 'react';
-import SimpleForm from './Module 4/Advanced React Concepts/Forms/SimpleForm';
 
-function App() {
-  return (
-    <div className="App">
-      <SimpleForm />
-    </div>
-  );
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, info) {
+    console.error("Error in child component:", error, info);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <h2>Something went wrong.</h2>;
+    }
+
+    return this.props.children;
+  }
 }
 
-export default App;
+export default ErrorBoundary;
