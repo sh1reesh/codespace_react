@@ -1,16 +1,25 @@
 const express = require('express');
-const bodyParser = require('body-parser');
+const passport = require('passport');
+const session = require('express-session');
+const dotenv = require('dotenv');
 const authRoutes = require('./routes/authRoutes');
-require('dotenv').config();
+
+dotenv.config();
+require('./config/passport');
 
 const app = express();
-app.use(bodyParser.json());
+
+app.use(express.json());
+app.use(session({ secret: 'session_secret', resave: false, saveUninitialized: true }));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
-    res.send('JWT Auth API');
+  res.send('JWT + Google OAuth Authentication');
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
