@@ -1,7 +1,7 @@
 // ParentComponent.jsx
 import React, { useCallback, useState } from "react";
 
-// Internal styles
+// Inline styles for components
 const styles = {
   container: {
     fontFamily: "Arial, sans-serif",
@@ -42,39 +42,41 @@ const styles = {
   },
 };
 
-// Memoized child component
+// Memoized child component to prevent unnecessary re-renders
 const ChildComponent = React.memo(({ count, onIncrement }) => {
   console.log("ChildComponent rendered");
 
   if (typeof count !== "number") {
-    return <p style={styles.errorText}>Error: Count must be a number</p>;
+    return <p style={styles.errorText} data-testid="error-message">Error: Count must be a number</p>;
   }
 
   return (
-    <div style={styles.childBox}>
+    <div style={styles.childBox} data-testid="child-component">
       <h3>Child Component</h3>
       <p>Count: {count}</p>
-      <button style={styles.button} onClick={onIncrement}>
+      <button style={styles.button} onClick={onIncrement} data-testid="increment-button">
         Increment
       </button>
     </div>
   );
 });
 
+// Parent component manages state and passes props down to child
 const ParentComponent = () => {
   const [count, setCount] = useState(0);
   const [text, setText] = useState("");
 
+  // Using useCallback with count as dependency makes it dynamic if needed in future
   const handleIncrement = useCallback(() => {
     setCount((prev) => prev + 1);
-  }, []);
+  }, [setCount]);
 
   const handleInputChange = (e) => {
     setText(e.target.value);
   };
 
   return (
-    <div style={styles.container}>
+    <div style={styles.container} data-testid="parent-component">
       <h2>Parent Component</h2>
       <input
         type="text"
@@ -82,6 +84,7 @@ const ParentComponent = () => {
         onChange={handleInputChange}
         placeholder="Type something..."
         style={styles.input}
+        data-testid="text-input"
       />
       <ChildComponent count={count} onIncrement={handleIncrement} />
     </div>
