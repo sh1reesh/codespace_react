@@ -53,7 +53,6 @@ const AxiosData = () => {
     },
   };
 
-  // Fetch users with Axios and handle errors
   const fetchUsers = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -78,9 +77,9 @@ const AxiosData = () => {
   }, [fetchUsers]);
 
   const renderedUsers = useMemo(() => (
-    <ol style={styles.list}>
+    <ol style={styles.list} data-testid="user-list">
       {users.map((user) => (
-        <li key={user.id} style={styles.item}>
+        <li key={user.id} style={styles.item} data-testid="user-item">
           <strong>{user.name}</strong> — {user.email}
         </li>
       ))}
@@ -90,11 +89,17 @@ const AxiosData = () => {
   return (
     <section style={styles.wrapper} aria-live="polite">
       <h2 style={styles.heading}>User List (Axios)</h2>
-      {loading && <p style={styles.loading}>Loading user data...</p>}
+      {loading && <p style={styles.loading} data-testid="loading">Loading user data...</p>}
       {!loading && error && (
         <>
-          <p style={styles.error}>{error}</p>
-          <button style={styles.retryBtn} onClick={fetchUsers}>Retry</button>
+          <p style={styles.error} data-testid="error">{error}</p>
+          <button
+            style={styles.retryBtn}
+            onClick={fetchUsers}
+            data-testid="retry-button"
+          >
+            Retry
+          </button>
         </>
       )}
       {!loading && !error && renderedUsers}
