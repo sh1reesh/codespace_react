@@ -1,25 +1,38 @@
-import React, { useState, useCallback } from 'react';
-import ChildComponent from './ChildComponent';
+import React from "react";
+import ParentComponent from "./Module 4/Advanced React Concepts/Optimizing Performance with React Memoization/ParentComponent";
+import ParentComponent from "./ParentComponent";
 
-const ParentComponent = () => {
-  const [count, setCount] = useState(0);
-  const [otherState, setOtherState] = useState(false);
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
 
-  const handleIncrement = useCallback(() => {
-    setCount(prev => prev + 1);
-  }, []);
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
 
+  componentDidCatch(error, info) {
+    console.error("Error caught in ErrorBoundary:", error, info);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <h2>Something went wrong in the application.</h2>;
+    }
+    return this.props.children;
+  }
+}
+
+const App = () => {
   return (
-    <div>
-      <h2>Parent Component</h2>
-      <p>Count: {count}</p>
-      <button onClick={handleIncrement}>Increment Count</button>
-      <button onClick={() => setOtherState(!otherState)}>
-        Toggle Other State
-      </button>
-      <ChildComponent count={count} />
+    <div style={{ textAlign: "center", fontFamily: "Arial, sans-serif", marginTop: "30px" }}>
+      <h1 style={{ color: "#333" }}>React.memo Optimization Pro</h1>
+      <ParentComponent />
+      <h1 style={{ color: "#333" }}>React.memo Optimization</h1>
+      <ErrorBoundary>
+        <ParentComponent />
+      </ErrorBoundary>
     </div>
   );
 };
-
-export default ParentComponent;
