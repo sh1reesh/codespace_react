@@ -1,57 +1,38 @@
-import React from 'react';
-import AxiosData from './Module 4/Advanced React Concepts/Fetching Data Using Fetch API & Axios/AxiosData';
+// App.jsx
+import React from "react";
+import ParentComponent from "./ParentComponent";
 
-// ErrorBoundary Component
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false, error: null };
+    this.state = { hasError: false };
   }
 
   static getDerivedStateFromError(error) {
-    return { hasError: true, error };
+    return { hasError: true };
   }
 
-  componentDidCatch(error, errorInfo) {
-    console.error("Error caught in ErrorBoundary:", error, errorInfo);
+  componentDidCatch(error, info) {
+    console.error("Error caught in ErrorBoundary:", error, info);
   }
 
   render() {
     if (this.state.hasError) {
-      return (
-        <div style={{ padding: '2rem', textAlign: 'center', color: '#c0392b' }}>
-          <h2>Something went wrong.</h2>
-          <p>{this.state.error?.message}</p>
-        </div>
-      );
+      return <h2>Something went wrong in the application.</h2>;
     }
     return this.props.children;
   }
 }
 
-function App() {
-  const styles = {
-    container: {
-      fontFamily: 'Arial, sans-serif',
-      padding: '2rem',
-      backgroundColor: '#f5f7fa',
-      minHeight: '100vh',
-    },
-    heading: {
-      textAlign: 'center',
-      color: '#2c3e50',
-      marginBottom: '2rem',
-    },
-  };
-
+const App = () => {
   return (
-    <div style={styles.container}>
-      <h1 style={styles.heading}>Axios Data Fetch Example</h1>
+    <div style={{ textAlign: "center", fontFamily: "Arial, sans-serif", marginTop: "30px" }}>
+      <h1 style={{ color: "#333" }}>React.memo Optimization</h1>
       <ErrorBoundary>
-        <AxiosData />
+        <ParentComponent />
       </ErrorBoundary>
     </div>
   );
-}
+};
 
 export default App;
