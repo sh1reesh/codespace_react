@@ -1,37 +1,27 @@
-import React, { useCallback, useState } from "react";
+import React from 'react';
+import AxiosData from './Module 4/Advanced React Concepts/Fetching Data Using Fetch API & Axios/AxiosData';
 
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-// import './App.css'
+function App() {
+  const styles = {
+    container: {
+      fontFamily: 'Arial, sans-serif',
+      padding: '2rem',
+      backgroundColor: '#f5f7fa',
+      minHeight: '100vh',
+    },
+    heading: {
+      textAlign: 'center',
+      color: '#2c3e50',
+      marginBottom: '2rem',
+    },
+  };
 
-// function App() {
-//   const [count, setCount] = useState(0)
+  return (
+    <div style={styles.container}>
+      <h1 style={styles.heading}>Axios Data Fetch Example</h1>
+      <AxiosData />
+    </div>
+  );
+}
 
-//   return (
-//     <>
-//       <div>
-//         <a href="https://vite.dev" target="_blank">
-//           <img src={viteLogo} className="logo" alt="Vite logo" />
-//         </a>
-//         <a href="https://react.dev" target="_blank">
-//           <img src={reactLogo} className="logo react" alt="React logo" />
-//         </a>
-//       </div>
-//       <h1>Vite + React</h1>
-//       <div className="card">
-//         <button onClick={() => setCount((count) => count + 1)}>
-//           count is {count}
-//         </button>
-//         <p>
-//           Edit <code>src/App.jsx</code> and save to test HMR
-//         </p>
-//       </div>
-//       <p className="read-the-docs">
-//         Click on the Vite and React logos to learn more
-//       </p>
-//     </>
-//   )
-// }
-
-// export default App
+export default App;
